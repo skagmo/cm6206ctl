@@ -446,7 +446,10 @@ void parseArgumentsToConfig(int argc, char* argv[]) {
         } else if(strcmp(argv[argn], "-v")==0) {
             cfg.verbose = true;
         } else if(strcmp(argv[argn], "-w")==0) {
-            if(argc-argn-1 < 1) { err(1, "-w too few arguments"); }
+            if(argc-argn-1 < 2) { err(1, "-w too few arguments"); }
+            lval = strtol(argv[++argn], NULL, 0);
+            if(lval<0 || lval>NUM_REGS-1) { err(EXIT_FAILURE, "-w reg out of range [0;%u]", NUM_REGS-1); }
+            cfg.reg = lval;
             lval = strtol(argv[++argn], NULL, 0);
             if(lval<0 || lval>0xFFFF) { err(EXIT_FAILURE, "-w value out of range [0;0xFFFF]"); }
             cfg.writeVal = lval;
